@@ -1,0 +1,74 @@
+<div class="container mt-3">
+    <div class="card">
+      <div class="card-body">
+  
+  
+          <h3>Edição de produtos</h3>
+          <p>Preencha os campos para incluir um produto.</p>
+  
+  
+          <div *ngIf="mensagem != ''"
+              class="alert alert-primary alert-dismissible fade show" role="alert">
+              <strong>{{mensagem}}</strong>
+              <button (click)="mensagem = ''"
+                  type="button" class="btn-close" aria-label="Close"></button>
+          </div>
+         
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  
+  
+              <div class="row mb-3">
+                  <div class="col-md-6">
+                      <label>Nome do produto:</label>
+                      <input type="text" class="form-control" formControlName="nome"/>
+                      <div class="text-danger" *ngIf="f['nome'].touched && f['nome'].invalid">
+                          Por favor, informe o nome do produto.
+                      </div>
+                  </div>
+                  <div class="col-md-3">
+                      <label>Preço:</label>
+                      <input type="text" class="form-control" formControlName="preco"/>
+                      <div class="text-danger" *ngIf="f['preco'].touched && f['preco'].invalid">
+                          Por favor, informe o preço do produto.
+                      </div>
+                  </div>
+                  <div class="col-md-3">
+                      <label>Quantidade:</label>
+                      <input type="text" class="form-control" formControlName="quantidade"/>
+                      <div class="text-danger" *ngIf="f['quantidade'].touched && f['quantidade'].invalid">
+                          Por favor, informe a quantidade do produto.
+                      </div>
+                  </div>
+              </div>
+  
+  
+              <div class="row mb-3">
+                  <div class="col-md-3">
+                      <label>Selecione a categoria:</label>
+                      <select class="form-select" formControlName="categoriaId">
+                          <option value="">Escolha uma opção</option>
+                          <option *ngFor="let c of categorias" value="{{c.id}}">
+                              {{c.nome}}
+                          </option>
+                      </select>
+                      <div class="text-danger" *ngIf="f['categoriaId'].touched && f['categoriaId'].invalid">
+                          Por favor, selecione a categoria do produto.
+                      </div>
+                  </div>
+              </div>
+  
+  
+              <div class="row mb-3">
+                  <div class="col-md-3">
+                      <input type="submit" class="btn btn-primary" value="Salvar Alterações"
+                          [disabled]="form.invalid"/>
+                  </div>
+              </div>
+  
+  
+          </form>
+  
+  
+      </div>
+    </div>
+  

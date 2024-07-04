@@ -1,0 +1,137 @@
+<div class="container mt-3">
+  <div class="card">
+    <div class="card-body">
+      <h3>Controle de produtos</h3>
+      <p>Listagem de produtos cadastrados.</p>
+
+
+      <div *ngIf="mensagem != ''"
+            class="alert alert-primary alert-dismissible fade show" role="alert">
+            <strong>{{mensagem}}</strong>
+            <button (click)="mensagem = ''"
+                    type="button" class="btn-close" aria-label="Close"></button>
+      </div>
+
+
+      <div class="table-responsive">
+        <table class="table table-sm table-hover table-striped">
+          <thead>
+            <tr>
+              <th width="20%">Nome do produto</th>
+              <th width="15%">Preço</th>
+              <th width="15%">Quantidade</th>
+              <th width="15%">Total</th>
+              <th width="15%">Categoria</th>
+              <th width="20%">Operações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of produtos | paginate: { itemsPerPage: 5, currentPage: paginador }">
+              <td>{{ p.nome | uppercase }}</td>
+              <td>{{ p.preco | currency: 'R$ ' }}</td>
+              <td>{{ p.quantidade }}</td>
+              <td>{{ p.preco * p.quantidade | currency: 'R$ ' }}</td>
+              <td>
+                <div class="badge bg-secondary">
+                  {{ p.categoria.nome | uppercase }}
+                </div>
+              </td>
+              <td>
+
+
+                <button class="btn btn-sm btn-outline-primary"
+                  [routerLink]="['/editar-produtos', p.id]">
+                  Editar
+                </button>
+
+
+                <button class="btn btn-sm btn-outline-danger ms-2"
+                  data-bs-toggle="modal" data-bs-target="#modalExclusao"
+                  (click)="onSelect(p)">
+                  Excluir
+                </button>
+
+
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5">
+                Quantidade de produtos obtidos: {{ produtos.length }}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+
+      <div class="text-center mt-2">
+          <!-- Régua de paginação -->
+          <pagination-controls
+              previousLabel="Página anterior"
+              nextLabel="Próxima página"
+              (pageChange)="pageChange($event)"
+          />
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+
+<!-- janela modal de exclusão -->
+<div class="modal fade" id="modalExclusao" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Exclusão de produto</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       
+        <p>
+          Deseja realmente excluir o produto selecionado?
+        </p>
+
+
+        <div>
+          <table class="table table-sm">
+            <tr>
+              <td>Nome do produto:</td>
+              <td><strong>{{produto.nome | uppercase}}</strong></td>
+            </tr>
+            <tr>
+              <td>Preço:</td>
+              <td><strong>{{produto.preco | currency : 'R$ '}}</strong></td>
+            </tr>
+            <tr>
+              <td>Quantidade:</td>
+              <td><strong>{{produto.quantidade}}</strong></td>
+            </tr>
+            <tr>
+              <td>Categoria:</td>
+              <td><strong>{{produto.categoria?.nome}}</strong></td>
+            </tr>
+          </table>
+        </div>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-danger"
+          (click)="onDelete()" data-bs-dismiss="modal">
+          Confirmar exclusão
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
